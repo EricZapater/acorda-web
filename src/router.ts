@@ -6,10 +6,15 @@ import Groups from "./views/Groups.vue";
 import Group from "./views/Group.vue";
 import Users from "./views/Users.vue";
 import User from "./views/User.vue";
+import Meetings from "./views/Meetings.vue";
+import Meeting from "./views/Meeting.vue";
+import Search from "./views/Search.vue";
+import Test from "./views/Test.vue";
 
 const routes = [
   { path: "/login", component: Login },
   { path: "/register", component: Register },
+  { path: "/test", component: Test },
   { path: "/home", component: Home, meta: { requiresAuth: true } },
   { path: "/", component: Home, meta: { requiresAuth: true } },
   { path: "/groups", component: Groups, meta: { requiresAuth: true } },
@@ -22,6 +27,10 @@ const routes = [
   { path: "/users", component: Users, meta: { requiresAuth: true } },
   { path: "/user", component: User, meta: { requiresAuth: true } },
   { path: "/user/:id", component: User, meta: { requiresAuth: true } },
+  { path: "/meetings", component: Meetings, meta: { requiresAuth: true } },
+  { path: "/meeting", component: Meeting, meta: { requiresAuth: true } },
+  { path: "/meeting/:id", component: Meeting, meta: { requiresAuth: true } },
+  { path: "/search", component: Search, meta: { requiresAuth: true } },
 ];
 
 const router = createRouter({

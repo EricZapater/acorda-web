@@ -21,6 +21,19 @@ import {
   ToggleSwitch,
   Listbox,
   Breadcrumb,
+  DatePicker,
+  Textarea,
+  Tabs,
+  TabList,
+  Tab,
+  TabPanel,
+  TabPanels,
+  Tooltip,
+  IconField,
+  InputIcon,
+  InputGroup,
+  InputGroupAddon,
+  Chip,
 } from "primevue";
 import ToastService from "primevue/toastservice";
 import Toast from "primevue/toast";
@@ -49,4 +62,19 @@ app.component("Dialog", Dialog);
 app.component("ToggleSwitch", ToggleSwitch);
 app.component("Listbox", Listbox);
 app.component("Breadcrumb", Breadcrumb);
+app.component("DatePicker", DatePicker);
+app.component("Textarea", Textarea);
+app.component("Tabs", Tabs);
+app.component("Tab", Tab);
+app.component("TabList", TabList);
+app.component("TabPanels", TabPanels);
+app.component("TabPanel", TabPanel);
+app.component("IconField", IconField);
+app.component("InputIcon", InputIcon);
+app.component("InputGroup", InputGroup);
+app.component("InputGroupAddon", InputGroupAddon);
+app.component("Chip", Chip);
+
+app.directive("Tooltip", Tooltip);
+
 app.mount("#app");

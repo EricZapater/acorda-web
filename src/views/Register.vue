@@ -44,7 +44,7 @@
                 id="password"
                 v-model="form.password"
                 toggleMask
-                :feedback="false"
+                :feedback="true"
                 required
               />
             </div>

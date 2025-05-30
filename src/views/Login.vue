@@ -11,7 +11,14 @@
 
         <div class="field two-columns">
           <div><label for="password">Contrasenya</label></div>
-          <div><Password id="password" v-model="password" toggleMask /></div>
+          <div>
+            <Password
+              id="password"
+              v-model="password"
+              toggleMask
+              :feedback="false"
+            />
+          </div>
         </div>
         <div class="field two-columns">
           <div>

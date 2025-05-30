@@ -4,7 +4,8 @@
   >
     <!-- Esquerra: Logo -->
     <div class="flex align-items-center gap-2">
-      <img src="/logo.svg" alt="Logo" class="logo" />
+      <!--<img src="/logo.svg" alt="Logo" class="logo" />-->
+      <img src="/logo_acorda.png" alt="Logo" class="logo" />
     </div>
 
     <!-- Centre: Títol -->
