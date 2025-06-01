@@ -18,7 +18,7 @@ ARG API_URL
 ENV VITE_API_URL=$API_URL
 
 # Construeix l'aplicació per producció (Vue 3 + Vite + TypeScript)
-RUN npm run build
+RUN npm run build || (echo "Build failed, checking logs..." && npm run build 2>&1 | tee build.log && exit 1)
 
 # Usa nginx per servir l'aplicació
 FROM nginx:alpine
