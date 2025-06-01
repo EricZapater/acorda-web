@@ -34,8 +34,8 @@ jobs:
       - name: Build and push Frontend image
         uses: docker/build-push-action@v5
         with:
-          context: ./frontend
-          file: ./frontend/Dockerfile
+          context: ./
+          file: ./Dockerfile
           push: true
           build-args: |
             API_URL=${{ secrets.API_URL }}
