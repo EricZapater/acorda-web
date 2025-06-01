@@ -1,5 +1,5 @@
-# .github/workflows/deploy.yml
-name: Deploy to VPS
+# .github/workflows/deploy-frontend.yml
+name: Deploy Frontend to VPS
 
 on:
   push:
@@ -9,10 +9,9 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_FRONTEND: ghcr.io/ericzapater/acorda-web
-  IMAGE_BACKEND: ghcr.io/ericzapater/acorda-api
 
 jobs:
-  build-and-deploy:
+  build-and-deploy-frontend:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -38,25 +37,15 @@ jobs:
           context: ./frontend
           file: ./frontend/Dockerfile
           push: true
+          build-args: |
+            API_URL=${{ secrets.API_URL }}
           tags: |
             ${{ env.IMAGE_FRONTEND }}:latest
             ${{ env.IMAGE_FRONTEND }}:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Build and push Backend image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./backend
-          file: ./backend/Dockerfile
-          push: true
-          tags: |
-            ${{ env.IMAGE_BACKEND }}:latest
-            ${{ env.IMAGE_BACKEND }}:${{ github.sha }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-      - name: Deploy to VPS
+      - name: Deploy Frontend to VPS
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.VPS_HOST }}
@@ -68,18 +57,17 @@ jobs:
             # Login al registry
             echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-            # Pull noves imatges
+            # Pull nova imatge del frontend
             docker pull ${{ env.IMAGE_FRONTEND }}:latest
-            docker pull ${{ env.IMAGE_BACKEND }}:latest
 
-            # Actualitzar docker-compose amb les noves imatges
+            # Aixecar tot l'stack (Traefik, backend, frontend, etc.)
             docker-compose down
             docker-compose up -d
 
             # Neteja imatges antigues
             docker image prune -f
 
-            echo "✅ Desplegament completat!"
+            echo "✅ Desplegament completat - Tot l'stack aixecat!"
 
       - name: Verify deployment
         uses: appleboy/ssh-action@v1.0.0
@@ -90,4 +78,4 @@ jobs:
           script: |
             cd /home/${{ secrets.VPS_USER }}/acorda
             docker-compose ps
-            echo "🌍 App disponible a: https://acorda.zenith.ovh"
+            echo "🌍 Stack complet disponible a: https://acorda.zenith.ovh"
