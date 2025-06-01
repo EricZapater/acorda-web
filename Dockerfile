@@ -7,17 +7,17 @@ WORKDIR /app
 # Copia els fitxers de dependències
 COPY package*.json ./
 
-# Instal·la les dependències
-RUN npm ci --only=production
+# Instal·la les dependències (incloses les devDependencies per al build)
+RUN npm ci
 
 # Copia el codi font
 COPY . .
 
 # Defineix la variable d'entorn com a build argument
 ARG API_URL
-ENV VITE_API_BASE_URL=$API_URL
+ENV VITE_API_URL=$API_URL
 
-# Construeix l'aplicació per producció
+# Construeix l'aplicació per producció (Vue 3 + Vite + TypeScript)
 RUN npm run build
 
 # Usa nginx per servir l'aplicació
