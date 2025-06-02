@@ -1,36 +1,36 @@
-# Usa una imatge de Node.js per construir l'aplicació
+# Etapa de build amb Node
 FROM node:18-alpine AS builder
 
-# Estableix el directori de treball
+# Directori de treball
 WORKDIR /app
 
-# Copia els fitxers de dependències
+# Copia només les dependències primer per aprofitar la cache de Docker
 COPY package*.json ./
 
-# Instal·la les dependències (incloses les devDependencies per al build)
+# Instal·la les dependències (amb les dev incloses)
 RUN npm ci
 
 # Copia el codi font
 COPY . .
 
-# Defineix la variable d'entorn com a build argument
-ARG API_URL
-ENV VITE_API_URL=$API_URL
+# Rep un ARG per escollir l'entorn: development, staging, production...
+ARG BUILD_MODE=production
 
-# Construeix l'aplicació per producció (Vue 3 + Vite + TypeScript)
-RUN npm run build || (echo "Build failed, checking logs..." && npm run build 2>&1 | tee build.log && exit 1)
+# Exporta com a variable d'entorn per a Vite
+ENV NODE_ENV=$BUILD_MODE
 
-# Usa nginx per servir l'aplicació
+# Fa el build amb el mode indicat (passat com ARG)
+RUN npm run build -- --mode $BUILD_MODE || (echo "Build failed, checking logs..." && npm run build -- --mode $BUILD_MODE 2>&1 | tee build.log && exit 1)
+
+# Etapa final: Nginx per servir l'app
 FROM nginx:alpine
 
-# Copia els fitxers construïts des de l'etapa anterior
-COPY --from=builder /app/build /usr/share/nginx/html
+# Copia el build generat
+COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Copia la configuració personalitzada de nginx (opcional)
+# Configuració nginx personalitzada (opcional)
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Exposa el port 80
 EXPOSE 80
 
-# Inicia nginx
 CMD ["nginx", "-g", "daemon off;"]

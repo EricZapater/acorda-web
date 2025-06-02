@@ -9,12 +9,11 @@ import User from "./views/User.vue";
 import Meetings from "./views/Meetings.vue";
 import Meeting from "./views/Meeting.vue";
 import Search from "./views/Search.vue";
-import Test from "./views/Test.vue";
 
 const routes = [
   { path: "/login", component: Login },
   { path: "/register", component: Register },
-  { path: "/test", component: Test },
+
   { path: "/home", component: Home, meta: { requiresAuth: true } },
   { path: "/", component: Home, meta: { requiresAuth: true } },
   { path: "/groups", component: Groups, meta: { requiresAuth: true } },
